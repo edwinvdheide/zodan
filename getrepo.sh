@@ -1,6 +1,6 @@
 #!/bin/bash
 name=${1}
-devenv='${1}.dev'
+devenv=${1}.dev
 
 # BEGIN CONFIG SHIT #
 host=127.0.1.1
@@ -56,16 +56,13 @@ if [ ! -f ${dbfile} ]; then
 fi
 
 # set up host
-
 echo "${host} ${name}.dev" >> ${hostsfile}
 
 # set up virtual host config apacha
-echo "${host} ${name}.dev" >> ${hostsfile}
-
 echo "# CONFIG ADDED BY GETREPO SCRIPT #" >> ${defaultconf}
 echo "<VirtualHost *:80>" >> ${defaultconf}
 echo "	ServerAdmin webmaster@localhost" >> ${defaultconf}
-echo "	ServerName {devenv}" >> ${defaultconf}
+echo "	ServerName ${1}.dev" >> ${defaultconf}
 echo "	DocumentRoot /var/www/dev/devenv/${1}/public_html/" >> ${defaultconf}
 echo "	<Directory />" >> ${defaultconf}
 echo "		Options FollowSymLinks" >> ${defaultconf}
@@ -87,11 +84,12 @@ mysql -u $dbuser --password=$dbpassword -e "create database $name" < ${dbfile}
 mysql -u $dbuser --password=$dbpassword --database=$name < ${dbfile} 
 
 # write config local file
-
+echo "<?php" >  ${configlocal}		# create new config file
 echo "	\$sql_host = 'localhost'; ">> ${configlocal}
 echo "	\$sql_user = '${dbuser}'; ">> ${configlocal}
 echo "	\$sql_db = '${name}'; ">> ${configlocal}
 echo "	\$sql_password = '${dbpassword}'; ">> ${configlocal}
+echo "?>" >>  ${configlocal}
 
 # thats should be it I think...
 
