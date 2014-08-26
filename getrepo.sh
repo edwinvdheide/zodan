@@ -94,3 +94,6 @@ echo "	\$sql_db = '${name}'; ">> ${configlocal}
 echo "	\$sql_password = '${dbpassword}'; ">> ${configlocal}
 
 # thats should be it I think...
+
+# just restart apache and we'r all set
+service apache2 restart
