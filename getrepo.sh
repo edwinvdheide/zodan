@@ -8,7 +8,7 @@ hostsfile=/etc/hosts
 defaultconf=/etc/apache2/sites-enabled/000-default.conf
 dbuser=root
 dbpassword=test
-relativepath=/var/www/dev/devenv/		# this is the relative path to the dev env...
+relativepath=/var/www/html/dev/		# this is the relative path to the dev env...
 dbfile=${relativepath}/${name}/public_html/sql/db.sql
 configlocal=${relativepath}/${name}/public_html/config.local.php
 
@@ -46,7 +46,7 @@ fi
 # goto oswdev directory and fetch the repo
 echo "running oswdev add ${1}"
 
-cd ../dev/devenv/
+cd ${relativepath}
 ./oswdev add ${1}
 
 # check db patch file. This needs to be done AFTER getting the repo from github...
@@ -63,7 +63,7 @@ echo "# CONFIG ADDED BY GETREPO SCRIPT #" >> ${defaultconf}
 echo "<VirtualHost *:80>" >> ${defaultconf}
 echo "	ServerAdmin webmaster@localhost" >> ${defaultconf}
 echo "	ServerName ${1}.dev" >> ${defaultconf}
-echo "	DocumentRoot /var/www/dev/devenv/${1}/public_html/" >> ${defaultconf}
+echo "	DocumentRoot ${relativepath}${1}/public_html/" >> ${defaultconf}
 echo "	<Directory />" >> ${defaultconf}
 echo "		Options FollowSymLinks" >> ${defaultconf}
 echo "		AllowOverride All" >> ${defaultconf}
